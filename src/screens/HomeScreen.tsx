@@ -5,7 +5,7 @@ import {AxiosResponse} from 'axios';
 import {getAllMusicVideos} from '../network';
 import {IGetAllMusicVideosResponse} from '../network/getResponseModels';
 import {ReactQueryHelper} from '../components/organisms';
-import {Teaser} from '../components/molecules';
+import {SearchBar, Teaser} from '../components/molecules';
 import {IVideo} from '../modals';
 import {Platform, PlatformIOSStatic} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
@@ -26,12 +26,19 @@ export default function HomeScreen() {
     'getAllMusicVideos',
     () => getAllMusicVideos(),
   );
+
+  const onSearchPress = (searchText: string) => {
+    console.log(searchText);
+  };
+
   const renderThumbnail: ListRenderItem<IVideo> = ({item}) => {
     return <Teaser video={item} />;
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <ReactQueryHelper isLoading={isLoading} error={error}>
+        <SearchBar onSearchPress={onSearchPress} />
         <FlatList
           numColumns={numberOfColumns}
           data={musicVideos?.data.videos}

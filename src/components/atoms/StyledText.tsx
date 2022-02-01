@@ -16,12 +16,12 @@ const textStyleTitle = ScaledSheet.create({
   title: {
     fontWeight: 'bold',
     textAlign: 'center',
-    color: AppTheme.colors.primaryFont,
+    color: AppTheme.colors.PRIMARY,
     ...AppTheme.textVariants.title,
   },
   body: {
     textAlign: 'center',
-    color: AppTheme.colors.secondaryFont,
+    color: AppTheme.colors.SECONDARY,
     ...AppTheme.textVariants.body,
   },
 });
