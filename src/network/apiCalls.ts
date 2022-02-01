@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {endpoints} from '.';
-import config from '../config';
+import config from '../constants/config';
 var httpClient = axios.create({
   httpsAgent: {
     rejectUnauthorized: false,

@@ -1,6 +1,6 @@
-import {Genre, Video} from '../../modals';
+import {IGenre, IVideo} from '../../modals';
 
 export interface IGetAllMusicVideosResponse {
-  genres: Genre[];
-  videos: Video[];
+  genres: IGenre[];
+  videos: IVideo[];
 }
