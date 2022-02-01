@@ -3,14 +3,15 @@ const palette = {
   TRANSPARENT: 'transparent',
   LIGHT_GRAY: '#eeeeef',
   DANGER: '#e74c3c',
-  primaryFont: '#222',
-  secondaryFont: '#9b9b9b',
+  PRIMARY: '#222',
+  SECONDARY: '#535c68',
+  MIDDLEBLUE: '#7ed6df',
 };
 
 const AppTheme = {
   colors: palette,
   sizes: {
-    minTouchableArea: '44@s',
+    minTouchableArea: '44@mvs',
     imageAspectRatio: 522 / 292,
   },
   spacing: {

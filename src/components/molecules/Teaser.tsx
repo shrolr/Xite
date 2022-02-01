@@ -20,7 +20,7 @@ export const Teaser: React.FC<ITeaser> = ({video}) => {
       />
       <View style={styles.infoBar}>
         <StyledText type="title" text={video.title} />
-        <StyledText type="body" text={video.artist} />
+        <StyledText type="body" text={video.artist + video.genre_id} />
       </View>
     </View>
   );
