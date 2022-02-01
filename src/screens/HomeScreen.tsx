@@ -23,7 +23,6 @@ export default function HomeScreen() {
   const [mappedGenres, setmappedGenres] = useState<Map<number, string>>(
     new Map(),
   );
-  console.log('filtered results length', musicVideos.length);
   useEffect(() => {
     if (data?.data) {
       const {videos, genres} = data.data;
