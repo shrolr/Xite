@@ -1,5 +1,5 @@
 import {SafeAreaView, FlatList, ListRenderItem} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useQuery} from 'react-query';
 import {AxiosResponse} from 'axios';
 import {getAllMusicVideos} from '../network';
@@ -27,13 +27,32 @@ export default function HomeScreen() {
     () => getAllMusicVideos(),
   );
 
+  const [mappedGenres, setmappedGenres] = useState<Map<number, string>>(
+    new Map(),
+  );
+  useEffect(() => {
+    if (musicVideos) {
+      setmappedGenres(
+        new Map(musicVideos.data.genres.map(genre => [genre.id, genre.name])),
+      );
+    }
+  }, [musicVideos]);
+
+  const getGenreName = (id: number) => {
+    if (mappedGenres.has(id)) {
+      return mappedGenres.get(id);
+    }
+    return '';
+  };
+
   const onSearchPress = (searchText: string) => {
     console.log(searchText);
   };
 
   const renderThumbnail: ListRenderItem<IVideo> = ({item}) => {
-    return <Teaser video={item} />;
+    return <Teaser getGenreName={getGenreName} video={item} />;
   };
+  console.log(musicVideos?.data.genres);
 
   return (
     <SafeAreaView style={styles.container}>
