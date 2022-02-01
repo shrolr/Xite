@@ -14,17 +14,21 @@ import {IGenre} from '../../modals';
 import {GenreCard} from '.';
 import config from '../../constants/config';
 import {useDispatch, useSelector} from 'react-redux';
-import {getGenres} from '../../redux/selector';
+import {getGenres, getSelectedYear} from '../../redux/selector';
 import {VideoAction} from '../../redux/actionTypes';
+import {debounce} from 'debounce';
 
 export const FilterModal: React.FC = ({}) => {
   const genres = useSelector(getGenres);
+  const {minYear, maxYear} = useSelector(getSelectedYear);
+
   const dispatch = useDispatch<Dispatch<VideoAction>>();
 
   const multiSliderValuesChange = (values: number[]) => {
-    const [minYear, maxYear] = values;
-    dispatch({type: 'FILTER BY YEARS', maxYear, minYear});
+    const [_minYear, _maxYear] = values;
+    dispatch({type: 'FILTER BY YEARS', maxYear: _maxYear, minYear: _minYear});
   };
+  const debouncedDispatch = debounce(multiSliderValuesChange, 500);
 
   const renderGenreCard: ListRenderItem<IGenre> = ({item}) => {
     return <GenreCard genre={item} />;
@@ -35,8 +39,8 @@ export const FilterModal: React.FC = ({}) => {
         <View style={styles.sliderContainer}>
           <StyledText type="heading" text="Year" />
           <MultiSlider
-            values={[config.minYear, config.maxYear]}
-            onValuesChange={multiSliderValuesChange}
+            values={[minYear, maxYear]}
+            onValuesChange={debouncedDispatch}
             min={config.minYear}
             max={config.maxYear}
             enableLabel

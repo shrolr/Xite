@@ -9,7 +9,7 @@ if (Platform.OS === 'ios') {
 
 // in order to support landscape mode we need to multiple number of columns for iphone
 const config = {
-  minYear: 1900,
+  minYear: 1960,
   maxYear: 2022,
   numberOfColumns,
   server: 'https://raw.githubusercontent.com/',

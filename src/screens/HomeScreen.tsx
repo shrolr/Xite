@@ -15,7 +15,7 @@ import {VideoAction} from '../redux/actionTypes';
 import {getFilteredVideos} from '../redux/selector/selector';
 
 export default function HomeScreen() {
-  const {data, isLoading, error} = useQuery<
+  const {data, isLoading, error, refetch} = useQuery<
     AxiosResponse<IGetAllMusicVideosResponse>
   >('getAllMusicVideos', () => getAllMusicVideos());
   const dispatch = useDispatch<Dispatch<VideoAction>>();
@@ -43,7 +43,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ReactQueryHelper isLoading={isLoading} error={error}>
+      <ReactQueryHelper refetch={refetch} isLoading={isLoading} error={error}>
         <SearchBar />
         <FlatList
           numColumns={config.numberOfColumns}

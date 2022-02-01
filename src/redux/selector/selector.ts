@@ -3,6 +3,7 @@ import {RedusxAppState} from '../reducers/rootReducer';
 
 const getFilterAttribute = (state: RedusxAppState) => state.videos;
 const getGenres = (state: RedusxAppState) => state.videos.genres;
+const getSelectedYear = (state: RedusxAppState) => state.videos;
 const getSelectedGenres = (state: RedusxAppState) =>
   state.videos.selectedGenres;
 
@@ -18,4 +19,4 @@ const getFilteredVideos = (state: RedusxAppState) => {
   );
 };
 
-export {getFilteredVideos, getGenres, getSelectedGenres};
+export {getFilteredVideos, getGenres, getSelectedGenres, getSelectedYear};
