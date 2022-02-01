@@ -6,12 +6,15 @@ const palette = {
   PRIMARY: '#222',
   SECONDARY: '#535c68',
   MIDDLEBLUE: '#7ed6df',
+  AMOUR: '#ee5253',
+  WARMGRAY: '#efefef',
 };
 
 const AppTheme = {
   colors: palette,
   sizes: {
     minTouchableArea: '44@mvs',
+    iconSize: '22@mvs',
     imageAspectRatio: 522 / 292,
   },
   spacing: {
@@ -22,6 +25,9 @@ const AppTheme = {
     xl: '40@s',
   },
   textVariants: {
+    heading: {
+      fontSize: '16@mvs',
+    },
     title: {
       fontSize: '12@mvs',
     },

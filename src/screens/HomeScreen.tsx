@@ -1,69 +1,59 @@
 import {SafeAreaView, FlatList, ListRenderItem} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {Dispatch, useEffect, useState} from 'react';
 import {useQuery} from 'react-query';
 import {AxiosResponse} from 'axios';
 import {getAllMusicVideos} from '../network';
 import {IGetAllMusicVideosResponse} from '../network/getResponseModels';
 import {ReactQueryHelper} from '../components/organisms';
-import {SearchBar, Teaser} from '../components/molecules';
+import {FilterModal, SearchBar, Teaser} from '../components/molecules';
 import {IVideo} from '../modals';
-import {Platform, PlatformIOSStatic} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
-
-// it will only render 1 columns for iPhone and 3 columns for iPad
-var numberOfColumns = 1;
-if (Platform.OS === 'ios') {
-  const platformIOS = Platform as PlatformIOSStatic;
-  numberOfColumns = platformIOS.isPad ? 3 : 1;
-}
+import config from '../constants/config';
+import ActionSheet from 'react-native-actions-sheet';
+import {useDispatch, useSelector} from 'react-redux';
+import {VideoAction} from '../redux/actionTypes';
+import {getFilteredVideos} from '../redux/selector/selector';
 
 export default function HomeScreen() {
-  const {
-    data: musicVideos,
-    isLoading,
-    error,
-  } = useQuery<AxiosResponse<IGetAllMusicVideosResponse>>(
-    'getAllMusicVideos',
-    () => getAllMusicVideos(),
-  );
-
+  const {data, isLoading, error} = useQuery<
+    AxiosResponse<IGetAllMusicVideosResponse>
+  >('getAllMusicVideos', () => getAllMusicVideos());
+  const dispatch = useDispatch<Dispatch<VideoAction>>();
+  const musicVideos = useSelector(getFilteredVideos);
   const [mappedGenres, setmappedGenres] = useState<Map<number, string>>(
     new Map(),
   );
+  console.log('filtered results length', musicVideos.length);
   useEffect(() => {
-    if (musicVideos) {
+    if (data?.data) {
+      const {videos, genres} = data.data;
+      dispatch({type: 'SET VIDEOS', videos});
+      dispatch({type: 'SET GENRES', genres});
+    }
+    if (data?.data.genres) {
       setmappedGenres(
-        new Map(musicVideos.data.genres.map(genre => [genre.id, genre.name])),
+        new Map(data.data.genres.map(genre => [genre.id, genre.name])),
       );
     }
-  }, [musicVideos]);
-
-  const getGenreName = (id: number) => {
-    if (mappedGenres.has(id)) {
-      return mappedGenres.get(id);
-    }
-    return '';
-  };
-
-  const onSearchPress = (searchText: string) => {
-    console.log(searchText);
-  };
+  }, [data, dispatch]);
 
   const renderThumbnail: ListRenderItem<IVideo> = ({item}) => {
-    return <Teaser getGenreName={getGenreName} video={item} />;
+    return <Teaser Genres={mappedGenres} video={item} />;
   };
-  console.log(musicVideos?.data.genres);
 
   return (
     <SafeAreaView style={styles.container}>
       <ReactQueryHelper isLoading={isLoading} error={error}>
-        <SearchBar onSearchPress={onSearchPress} />
+        <SearchBar />
         <FlatList
-          numColumns={numberOfColumns}
-          data={musicVideos?.data.videos}
+          numColumns={config.numberOfColumns}
+          data={musicVideos}
           renderItem={renderThumbnail}
           keyExtractor={item => item.id.toString()}
         />
+        <ActionSheet animated id="filter">
+          <FilterModal />
+        </ActionSheet>
       </ReactQueryHelper>
     </SafeAreaView>
   );
