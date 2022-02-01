@@ -1,48 +1,73 @@
-import React, {useState} from 'react';
-import {TextInput, View} from 'react-native';
+import React, {Dispatch} from 'react';
+import {Image, Pressable, TextInput, View} from 'react-native';
 import {ScaledSheet} from 'react-native-size-matters';
 import AppTheme from '../../constants/AppTheme';
+import {SheetManager} from 'react-native-actions-sheet';
+import {useDispatch} from 'react-redux';
+import {VideoAction} from '../../redux/actionTypes';
 
-interface ISearchBar {
-  onSearchPress: (text: string) => void;
-}
+const filterIcon = require('../../assets/icons/filter.png');
 
-export const SearchBar: React.FC<ISearchBar> = ({onSearchPress}) => {
-  const [searchText, setsearchText] = useState('');
-  const onSubmitEditing = () => {
-    onSearchPress(searchText);
+export const SearchBar: React.FC = ({}) => {
+  const dispatch = useDispatch<Dispatch<VideoAction>>();
+  const onShowFilterPressed = () => {
+    SheetManager.show('filter');
   };
   const onChangeText = (text: string) => {
-    setsearchText(text);
+    dispatch({type: 'SEARCH BY TEXT', text});
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        onChangeText={onChangeText}
-        onSubmitEditing={onSubmitEditing}
-        keyboardType="web-search"
-        autoComplete="off"
-        placeholder="Search"
-        autoCapitalize="none"
-        style={styles.input}
-      />
+    <View>
+      <View style={styles.container}>
+        <TextInput
+          onChangeText={onChangeText}
+          keyboardType="web-search"
+          autoComplete="off"
+          autoCorrect={false}
+          placeholder="Search"
+          autoCapitalize="none"
+          style={styles.input}
+        />
+        <Pressable
+          onPress={onShowFilterPressed}
+          style={styles.filterIconContainer}>
+          <Image
+            resizeMode="contain"
+            style={styles.filterIcon}
+            source={filterIcon}
+          />
+        </Pressable>
+      </View>
+      <View style={styles.divider} />
     </View>
   );
 };
 
 const styles = ScaledSheet.create({
   container: {
-    paddingHorizontal: AppTheme.spacing.m,
+    flexDirection: 'row',
+  },
+  divider: {
+    marginHorizontal: AppTheme.spacing.m,
+    marginBottom: AppTheme.spacing.m,
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderColor: AppTheme.colors.LIGHT_GRAY,
+  },
+  filterIconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: AppTheme.sizes.minTouchableArea,
+    width: AppTheme.sizes.minTouchableArea,
+  },
+  filterIcon: {
+    height: AppTheme.sizes.iconSize,
+    width: AppTheme.sizes.iconSize,
   },
   input: {
-    borderRightWidth: 0,
-    borderTopWidth: 0,
-    borderLeftWidth: 0,
-    borderWidth: 1,
-    borderColor: AppTheme.colors.MIDDLEBLUE,
+    flex: 1,
+    paddingHorizontal: AppTheme.spacing.m,
     height: AppTheme.sizes.minTouchableArea,
-    margin: AppTheme.spacing.s,
-    padding: AppTheme.spacing.s,
   },
 });

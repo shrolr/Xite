@@ -5,7 +5,7 @@ import AppTheme from '../../constants/AppTheme';
 
 interface IStyledText {
   text: string;
-  type: 'title' | 'body';
+  type: 'title' | 'body' | 'heading';
 }
 
 export const StyledText: React.FC<IStyledText> = ({text, type}) => (
@@ -23,5 +23,11 @@ const textStyleTitle = ScaledSheet.create({
     textAlign: 'center',
     color: AppTheme.colors.SECONDARY,
     ...AppTheme.textVariants.body,
+  },
+  heading: {
+    fontWeight: 'bold',
+    marginHorizontal: AppTheme.spacing.m,
+    color: AppTheme.colors.PRIMARY,
+    ...AppTheme.textVariants.heading,
   },
 });

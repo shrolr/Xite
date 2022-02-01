@@ -10,15 +10,19 @@
 
 import React from 'react';
 import {QueryClient, QueryClientProvider} from 'react-query';
+import {Provider} from 'react-redux';
+import configureStore from './src/redux/store/configureStore';
 import HomeScreen from './src/screens/HomeScreen';
 
 const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <HomeScreen />
-    </QueryClientProvider>
+    <Provider store={configureStore.store}>
+      <QueryClientProvider client={queryClient}>
+        <HomeScreen />
+      </QueryClientProvider>
+    </Provider>
   );
 };
 
