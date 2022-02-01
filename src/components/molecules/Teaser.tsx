@@ -7,9 +7,10 @@ import {StyledText} from '../atoms';
 
 interface ITeaser {
   video: IVideo;
+  getGenreName: (id: number) => string | undefined;
 }
 
-export const Teaser: React.FC<ITeaser> = ({video}) => {
+export const Teaser: React.FC<ITeaser> = ({video, getGenreName}) => {
   return (
     <View style={styles.container}>
       <Image
@@ -20,7 +21,10 @@ export const Teaser: React.FC<ITeaser> = ({video}) => {
       />
       <View style={styles.infoBar}>
         <StyledText type="title" text={video.title} />
-        <StyledText type="body" text={video.artist + video.genre_id} />
+        <StyledText
+          type="body"
+          text={video.artist + ' ' + getGenreName(video.genre_id)}
+        />
       </View>
     </View>
   );
