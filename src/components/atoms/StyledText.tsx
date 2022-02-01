@@ -26,6 +26,7 @@ const textStyleTitle = ScaledSheet.create({
   },
   heading: {
     fontWeight: 'bold',
+    alignSelf: 'flex-start',
     marginHorizontal: AppTheme.spacing.m,
     color: AppTheme.colors.PRIMARY,
     ...AppTheme.textVariants.heading,

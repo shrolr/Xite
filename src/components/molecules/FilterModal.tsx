@@ -41,6 +41,7 @@ export const FilterModal: React.FC = ({}) => {
           <MultiSlider
             values={[minYear, maxYear]}
             onValuesChange={debouncedDispatch}
+            sliderLength={config.isIpad ? 700 : 280}
             min={config.minYear}
             max={config.maxYear}
             enableLabel
